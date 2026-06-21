@@ -4,6 +4,7 @@
 // @version      2026.06.21
 // @description  Keep TokyoMotion logged in, prefer HD playback, and clean distracting UI.
 // @author       Gholts
+// @license      GNU Affero General Public License v3.0
 // @match        https://www.tokyomotion.net/*
 // @grant        GM_getValue
 // @grant        GM_setValue

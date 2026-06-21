@@ -4,6 +4,7 @@
 // @version      2026.06.21
 // @description  Open list-page video thumbnails in a floating HLS overlay.
 // @author       Gholts
+// @license      GNU Affero General Public License v3.0
 // @match        *://*.lupingik.top/*
 // @match        *://*.shanxianzhijia.top/*
 // @match        *://*.lubosp.com/*

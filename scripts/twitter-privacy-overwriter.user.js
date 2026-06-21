@@ -4,6 +4,7 @@
 // @version      2026.06.21
 // @description  Disable X personalization preferences when auth tokens are available.
 // @author       Gholts
+// @license      GNU Affero General Public License v3.0
 // @match        https://x.com/*
 // @match        https://twitter.com/*
 // @grant        unsafeWindow

@@ -4,7 +4,7 @@
 // @version      2026.06.21
 // @description  Lock preferred Gemini model, normalize send hotkeys, and trim noisy UI.
 // @author       Gholts
-// @license      GPLv3
+// @license      GNU Affero General Public License v3.0
 // @icon         https://www.gstatic.com/lamda/images/gemini_sparkle_aurora_33f86dc0c0257da337c63.svg
 // @match        https://gemini.google.com/*
 // @run-at       document-start
@@ -12,8 +12,6 @@
 // @grant        GM_setValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @downloadURL https://update.greasyfork.org/scripts/572794/Yet%20Another%20Gemini%20Tweak.user.js
-// @updateURL https://update.greasyfork.org/scripts/572794/Yet%20Another%20Gemini%20Tweak.meta.js
 // ==/UserScript==
 
 (() => {

@@ -4,6 +4,7 @@
 // @version      2026.06.21
 // @description  Show Traditional Chinese translation under the active Monkeytype word.
 // @author       Gholts
+// @license      GNU Affero General Public License v3.0
 // @match        https://monkeytype.com/*
 // @grant        GM_xmlhttpRequest
 // @connect      translate.googleapis.com

@@ -4,6 +4,7 @@
 // @version      2026.06.21
 // @description  Hold a key to speed up playing videos, release to restore.
 // @author       Gholts
+// @license      GNU Affero General Public License v3.0
 // @match        *://*/*
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -11,8 +12,6 @@
 // @grant        GM_unregisterMenuCommand
 // @grant        GM_addStyle
 // @run-at       document-start
-// @downloadURL https://update.greasyfork.org/scripts/564842/Temporary%20Speed%20%28Hold%20to%20Speed%20Up%29.user.js
-// @updateURL https://update.greasyfork.org/scripts/564842/Temporary%20Speed%20%28Hold%20to%20Speed%20Up%29.meta.js
 // ==/UserScript==
 
 (function () {

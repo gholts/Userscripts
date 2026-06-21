@@ -3,6 +3,8 @@
 // @namespace    local.twitch.stability-kit
 // @version      2026.06.21
 // @description  Max quality, channel points, live recovery, UI cleanup, and gentle playback keepalive for Twitch.
+// @author       Gholts
+// @license      GNU Affero General Public License v3.0
 // @match        https://www.twitch.tv/*
 // @match        https://player.twitch.tv/*
 // @match        https://embed.twitch.tv/*
