@@ -1,0 +1,24 @@
+{
+    "name": "Userscripts",
+    "type": "module",
+    "version": "0.0.1",
+    "scripts": {
+        "format": "prettier --write .",
+        "format:check": "prettier --check ."
+    },
+    "devDependencies": {
+        "prettier": "^3.8.4"
+    },
+    "prettier": {
+        "tabWidth": 4,
+        "useTabs": false,
+        "overrides": [
+            {
+                "files": "*.astro",
+                "options": {
+                    "parser": "astro"
+                }
+            }
+        ]
+    }
+}
