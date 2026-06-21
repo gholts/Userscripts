@@ -10,7 +10,6 @@
 // @grant        GM_getValue
 // @grant        GM_registerMenuCommand
 // @grant        GM_unregisterMenuCommand
-// @grant        GM_addStyle
 // @run-at       document-start
 // ==/UserScript==
 
@@ -19,16 +18,15 @@
 
     const DEFAULTS = Object.freeze({
         speed: 3,
-        key: "c",
+        key: "z",
         pitch: true,
-        syncFix: true,
+        syncFix: false,
     });
     const MIN_SPEED = 0.25;
     const MAX_SPEED = 16;
 
     const originalByVideo = new Map();
     let active = false;
-    let toastNode = null;
     let settings = loadSettings();
     let menuCommandIds = [];
 
@@ -155,7 +153,6 @@
         }
 
         active = true;
-        showToast(`Speed x${settings.speed}`);
     }
 
     function restoreSpeed() {
@@ -166,7 +163,6 @@
         );
         originalByVideo.clear();
         active = false;
-        hideToast();
     }
 
     function isEditableTarget(target) {
@@ -189,41 +185,6 @@
             typeof event.key === "string" &&
             event.key.toLowerCase() === settings.key
         );
-    }
-
-    function showToast(text) {
-        const container =
-            document.fullscreenElement ||
-            document.body ||
-            document.documentElement;
-        if (!container) return;
-
-        if (!toastNode) {
-            toastNode = document.createElement("div");
-            toastNode.className = "vm-speed-toast";
-            toastNode.setAttribute("aria-hidden", "true");
-        }
-
-        if (toastNode.parentNode !== container) {
-            appendToast(container);
-        }
-
-        toastNode.textContent = text;
-        toastNode.style.opacity = "1";
-    }
-
-    function appendToast(container) {
-        try {
-            container.appendChild(toastNode);
-        } catch (_) {
-            const fallback = document.body || document.documentElement;
-            if (fallback && toastNode.parentNode !== fallback)
-                fallback.appendChild(toastNode);
-        }
-    }
-
-    function hideToast() {
-        if (toastNode) toastNode.style.opacity = "0";
     }
 
     document.addEventListener(
@@ -321,26 +282,4 @@
     }
 
     registerMenuCommands();
-
-    GM_addStyle(`
-.vm-speed-toast {
-    all: initial !important;
-    position: fixed !important;
-    top: 20px !important;
-    right: 20px !important;
-    box-sizing: border-box !important;
-    max-width: min(220px, calc(100vw - 40px)) !important;
-    background: rgba(0, 0, 0, 0.72) !important;
-    color: #fff !important;
-    padding: 6px 10px !important;
-    border-radius: 6px !important;
-    font: 14px/1.3 system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif !important;
-    z-index: 2147483647 !important;
-    pointer-events: none !important;
-    user-select: none !important;
-    opacity: 0 !important;
-    transition: opacity 150ms ease-out !important;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.3) !important;
-}
-    `);
 })();
