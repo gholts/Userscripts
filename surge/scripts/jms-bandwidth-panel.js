@@ -6,32 +6,55 @@
  * Modified by Hugo Lee, 2026.
  */
 
-import {
-    $argument,
-    Console,
-    done,
-    fetch,
-} from "https://cdn.jsdelivr.net/gh/NSNanoCat/util@3e0b0387eb13450a4e795858659f7d37d8efdc77/index.js";
+const UTIL_URL =
+    "https://cdn.jsdelivr.net/gh/NSNanoCat/util@3e0b0387eb13450a4e795858659f7d37d8efdc77/index.js";
 
-const args = $argument || {};
 const DEFAULT_TITLE = "JMS Bandwidth";
+let args = {};
+let utilConsole = { logLevel: "INFO" };
+let utilDone = null;
+let utilFetch = null;
 
-main().catch((error) => {
-    finish({
-        title: panelTitle(),
-        content: `Error: ${messageOf(error)}`,
-        style: "error",
-        icon: "exclamationmark.triangle.fill",
-        color: "#ff453a",
+import(UTIL_URL)
+    .then((util) => {
+        args = util.$argument || {};
+        utilConsole = util.Console || utilConsole;
+        utilDone = util.done || null;
+        utilFetch = util.fetch || null;
+        runMain();
+    })
+    .catch((error) => {
+        finishNative({
+            title: DEFAULT_TITLE,
+            content: `Error: ${messageOf(error)}`,
+            style: "error",
+            icon: "exclamationmark.triangle.fill",
+            "icon-color": "#ff453a",
+        });
     });
-});
+
+function runMain() {
+    main().catch((error) => {
+        finish({
+            title: panelTitle(),
+            content: `Error: ${messageOf(error)}`,
+            style: "error",
+            icon: "exclamationmark.triangle.fill",
+            color: "#ff453a",
+        });
+    });
+}
 
 async function main() {
-    Console.logLevel = arg(["LogLevel", "log_level"], "INFO");
+    utilConsole.logLevel = arg(["LogLevel", "log_level"], "INFO");
 
     const apiUrl = apiUrlFromArgs();
     if (!apiUrl || apiUrl === "XXXXXX") {
-        throw new Error("missing api_url or api_url_b64");
+        throw new Error("missing service or id");
+    }
+
+    if (typeof utilFetch !== "function") {
+        throw new Error("NSNanoCat fetch unavailable");
     }
 
     const timeout = numberArg(["timeout"], 8);
@@ -39,7 +62,7 @@ async function main() {
     const unit = arg(["unit"], "GB").toUpperCase() === "GIB" ? "GiB" : "GB";
     const divisor = unit === "GiB" ? 1024 ** 3 : 1000 ** 3;
 
-    const response = await fetch(apiUrl, {
+    const response = await utilFetch(apiUrl, {
         method: "GET",
         timeout,
         policy: policy || undefined,
@@ -98,13 +121,19 @@ async function main() {
 }
 
 function finish({ title, content, style, icon, color }) {
-    done({
+    finishNative({
         title,
         content,
         style,
         icon,
         "icon-color": color,
     });
+}
+
+function finishNative(payload) {
+    if (typeof utilDone === "function") return utilDone(payload);
+    if (typeof globalThis.$done === "function")
+        return globalThis.$done(payload);
 }
 
 function apiUrlFromArgs() {
