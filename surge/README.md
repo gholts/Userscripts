@@ -1,19 +1,25 @@
 `JMS Bandwidth` arguments:
 
-- `title`: panel title. Default `JMS Bandwidth`.
 - `interval`: panel update interval. Default `3600`.
-- `api-url-b64`: required base64url of the Just My Socks API bandwidth URL.
+- `host`: Just My Socks host. Default `justmysocks6.net`.
+- `service`: required `service` value from the bandwidth URL.
+- `id`: required `id` value from the bandwidth URL.
 - `policy`: request policy. Default `DIRECT`.
 - `unit`: `GB` or `GiB`. Default `GB`.
 - `timeout`: script and request timeout. Default `8`.
 
+For `https://justmysocks6.net/members/getbwcounter.php?service=123&id=abc`, use:
+
+- `host`: `justmysocks6.net`
+- `service`: `123`
+- `id`: `abc`
+
 `OpenAI Codex Usage` arguments:
 
-- `title`: panel title. Default `Codex Usage`.
 - `interval`: panel update interval. Default `300`.
 - `access-token`: required `tokens.access_token` from `~/.codex/auth.json`, or a Codex personal access token.
-- `account-id`: optional `tokens.account_id` from `~/.codex/auth.json` for workspace accounts.
-- `base-url`: default `https://chatgpt.com`.
+- `account-id`: optional `tokens.account_id` from `~/.codex/auth.json` for workspace accounts. Default `-`.
+- `base-url`: default `chatgpt.com`; full URLs also work.
 - `policy`: request policy. Default `DIRECT`.
 - `timeout`: script and request timeout. Default `8`.
 

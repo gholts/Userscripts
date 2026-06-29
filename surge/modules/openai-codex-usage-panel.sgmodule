@@ -1,10 +1,10 @@
 #!name=OpenAI Codex Usage Panel
 #!desc=Show Codex remaining usage via read-only usage API.
 #!category=Panels
-#!arguments=title:Codex Usage, interval:300, access-token, account-id:, base-url:https://chatgpt.com, policy:DIRECT, timeout:8
+#!arguments=interval:300, access-token, account-id:-, base-url:chatgpt.com, policy:DIRECT, timeout:8
 
 [Script]
-openai-codex-usage-panel = type=generic,script-path=https://raw.githubusercontent.com/gholts/Userscripts/main/surge/scripts/openai-codex-usage-panel.js,argument=title={{{title}}}&access_token={{{access-token}}}&account_id={{{account-id}}}&base_url={{{base-url}}}&policy={{{policy}}}&timeout={{{timeout}}},timeout={{{timeout}}},engine=webview
+openai-codex-usage-panel = type=generic,script-path=https://raw.githubusercontent.com/gholts/Userscripts/main/surge/scripts/openai-codex-usage-panel.js,argument=access_token={{{access-token}}}&account_id={{{account-id}}}&base_url={{{base-url}}}&policy={{{policy}}}&timeout={{{timeout}}},timeout={{{timeout}}},engine=webview
 
 [Panel]
-CodexUsage = title={{{title}}},content="Loading...",style=info,script-name=openai-codex-usage-panel,update-interval={{{interval}}}
+CodexUsage = title="Codex Usage",content="Loading...",style=info,script-name=openai-codex-usage-panel,update-interval={{{interval}}}

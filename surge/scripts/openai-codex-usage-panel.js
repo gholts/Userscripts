@@ -38,7 +38,9 @@ async function main() {
         ["account_id", "chatgpt_account_id", "workspace_id"],
         "",
     );
-    if (accountId) headers["ChatGPT-Account-Id"] = accountId;
+    if (accountId && !isPlaceholder(accountId)) {
+        headers["ChatGPT-Account-Id"] = accountId;
+    }
 
     const response = await fetch(url, {
         method: "GET",
@@ -111,6 +113,7 @@ function usageUrl() {
     if (explicit) return explicit;
 
     let baseUrl = arg(["base_url"], "https://chatgpt.com").replace(/\/+$/, "");
+    if (!/^https?:\/\//i.test(baseUrl)) baseUrl = `https://${baseUrl}`;
     if (/^https:\/\/(chatgpt\.com|chat\.openai\.com)$/i.test(baseUrl)) {
         baseUrl = `${baseUrl}/backend-api`;
     }
@@ -137,6 +140,12 @@ function bearerToken() {
 
 function panelTitle() {
     return arg(["title"], DEFAULT_TITLE);
+}
+
+function isPlaceholder(value) {
+    return ["-", "none", "null", "undefined"].includes(
+        String(value).trim().toLowerCase(),
+    );
 }
 
 function normalizeWindow(raw) {

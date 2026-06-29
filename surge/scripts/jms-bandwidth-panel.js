@@ -109,19 +109,43 @@ function finish({ title, content, style, icon, color }) {
 
 function apiUrlFromArgs() {
     const raw = arg(["api_url", "jms_api_url", "url", "api"], "");
-    if (raw) return raw;
+    if (raw && !isPlaceholder(raw)) return raw;
 
     const encoded = arg(["api_url_b64", "jms_api_url_b64", "url_b64"], "");
-    if (!encoded) return "";
-    try {
-        return decodeBase64(encoded);
-    } catch {
-        throw new Error("bad api_url_b64");
+    if (encoded && !isPlaceholder(encoded)) {
+        try {
+            return decodeBase64(encoded);
+        } catch {
+            throw new Error("bad api_url_b64");
+        }
     }
+
+    const service = arg(["service", "service_id"], "");
+    const id = arg(["id", "uuid"], "");
+    if (isPlaceholder(service) || isPlaceholder(id)) return "";
+
+    const base = bandwidthApiBase(
+        arg(["base_url", "host"], "justmysocks6.net"),
+    );
+    return `${base}?service=${encodeURIComponent(service)}&id=${encodeURIComponent(id)}`;
 }
 
 function panelTitle() {
     return arg(["title"], DEFAULT_TITLE);
+}
+
+function bandwidthApiBase(value) {
+    let base = String(value || "justmysocks6.net").trim();
+    if (!/^https?:\/\//i.test(base)) base = `https://${base}`;
+    base = base.replace(/\/+$/, "");
+    if (/\/getbwcounter\.php$/i.test(base)) return base;
+    return `${base}/members/getbwcounter.php`;
+}
+
+function isPlaceholder(value) {
+    return ["", "-", "none", "null", "undefined"].includes(
+        String(value).trim().toLowerCase(),
+    );
 }
 
 function decodeBase64(value) {
@@ -131,7 +155,37 @@ function decodeBase64(value) {
         .replace(/-/g, "+")
         .replace(/_/g, "/");
     while (normalized.length % 4) normalized += "=";
-    return atob(normalized);
+    try {
+        if (typeof atob === "function") return atob(normalized);
+    } catch {
+        return decodeBase64Manually(normalized);
+    }
+    return decodeBase64Manually(normalized);
+}
+
+function decodeBase64Manually(value) {
+    const alphabet =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+    let bits = 0;
+    let buffer = 0;
+    let output = "";
+
+    for (const char of value.replace(/=+$/, "")) {
+        const index = alphabet.indexOf(char);
+        if (index < 0) throw new Error("bad base64");
+        buffer = (buffer << 6) | index;
+        bits += 6;
+        if (bits >= 8) {
+            bits -= 8;
+            output += String.fromCharCode((buffer >> bits) & 0xff);
+        }
+    }
+
+    try {
+        return decodeURIComponent(escape(output));
+    } catch {
+        return output;
+    }
 }
 
 function arg(names, fallback = "") {
