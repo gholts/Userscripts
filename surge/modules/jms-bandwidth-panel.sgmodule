@@ -1,10 +1,10 @@
 #!name=JMS Bandwidth Panel
 #!desc=Show Just My Socks bandwidth from API.
 #!category=Panels
-#!arguments=interval:3600, host:justmysocks6.net, service, id, policy:DIRECT, unit:GB, timeout:8
+#!arguments=interval:3600, host:justmysocks6.net, service, id, unit:GB, timeout:8
 
 [Script]
-jms-bandwidth-panel = type=generic,script-path=https://raw.githubusercontent.com/gholts/Userscripts/main/surge/scripts/jms-bandwidth-panel.js,argument=host={{{host}}}&service={{{service}}}&id={{{id}}}&policy={{{policy}}}&unit={{{unit}}}&timeout={{{timeout}}},timeout={{{timeout}}},engine=webview
+jms-bandwidth-panel = type=generic,script-path=https://raw.githubusercontent.com/gholts/Userscripts/main/surge/scripts/jms-bandwidth-panel.js,argument=host={{{host}}}&service={{{service}}}&id={{{id}}}&unit={{{unit}}}&timeout={{{timeout}}},timeout={{{timeout}}},engine=webview
 
 [Panel]
 JMSBandwidth = title="JMS Bandwidth",content="Loading...",style=info,script-name=jms-bandwidth-panel,update-interval={{{interval}}}

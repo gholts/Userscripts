@@ -58,14 +58,12 @@ async function main() {
     }
 
     const timeout = numberArg(["timeout"], 8);
-    const policy = arg(["policy", "node"], "");
     const unit = arg(["unit"], "GB").toUpperCase() === "GIB" ? "GiB" : "GB";
     const divisor = unit === "GiB" ? 1024 ** 3 : 1000 ** 3;
 
     const response = await utilFetch(apiUrl, {
         method: "GET",
         timeout,
-        policy: policy || undefined,
         redirection: true,
         headers: { Accept: "application/json" },
     });
@@ -104,11 +102,10 @@ async function main() {
     const lines = [
         `Used: ${formatBytes(usedBytes, divisor)} / ${formatBytes(limitBytes, divisor)} ${unit} (${usedPercent.toFixed(2)}%)`,
         `Left: ${formatBytes(leftBytes, divisor)} ${unit} (${leftPercent.toFixed(2)}%)`,
-        `Bar: ${bar(usedPercent)}`,
+        `${bar(usedPercent)}`,
     ];
 
     if (resetDay) lines.push(`Reset day: ${resetDay}`);
-    if (policy) lines.push(`Policy: ${policy}`);
     lines.push(`Updated: ${timestamp()}`);
 
     finish({
